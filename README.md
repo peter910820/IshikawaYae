@@ -1,0 +1,2 @@
+# IshikawaYae
+golang music bot
