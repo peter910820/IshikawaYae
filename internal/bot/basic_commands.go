@@ -19,4 +19,5 @@ func BasicCommands(s *discordgo.Session) {
 			return
 		}
 	}
+	logrus.Infof("add command modules %s success.\n", "basic")
 }

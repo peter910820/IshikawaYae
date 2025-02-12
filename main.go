@@ -40,6 +40,7 @@ func main() {
 	}
 
 	c.Bot.AddHandler(ready)
+	c.Bot.AddHandler(onInteraction)
 
 	err = c.Bot.Open()
 	if err != nil {
@@ -57,5 +58,10 @@ func main() {
 
 func ready(s *discordgo.Session, r *discordgo.Ready) {
 	s.UpdateGameStatus(0, c.StartStatus)
+	bot.CleanCommand(c.Bot)
 	bot.RegisterCommand(s)
+}
+
+func onInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	go bot.HandleInteraction(s, i)
 }
