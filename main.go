@@ -57,4 +57,5 @@ func main() {
 
 func ready(s *discordgo.Session, r *discordgo.Ready) {
 	s.UpdateGameStatus(0, c.StartStatus)
+	bot.RegisterCommand(s)
 }

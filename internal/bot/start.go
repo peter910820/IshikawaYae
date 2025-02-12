@@ -10,3 +10,7 @@ type Config struct {
 	AppID       string
 	StartStatus string
 }
+
+func RegisterCommand(s *discordgo.Session) {
+
+}
