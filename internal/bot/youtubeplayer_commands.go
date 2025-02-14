@@ -23,6 +23,10 @@ func YoutubePlayerCommands(s *discordgo.Session) {
 			Name:        "leave",
 			Description: "leave voice channel",
 		},
+		{
+			Name:        "play-test",
+			Description: "testing the bot to play music",
+		},
 	}
 	for _, cmd := range commands {
 		_, err := s.ApplicationCommandCreate(s.State.User.ID, "", cmd)

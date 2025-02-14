@@ -12,8 +12,9 @@ import (
 var commandHandlerMap = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate, c *common.Config){
 	"ping": basic.Ping,
 
-	"join":  youtubeplayer.Join,
-	"leave": youtubeplayer.Leave,
+	"join":      youtubeplayer.Join,
+	"leave":     youtubeplayer.Leave,
+	"play-test": youtubeplayer.PlayTest,
 }
 
 func HandleInteraction(s *discordgo.Session, i *discordgo.InteractionCreate, c *common.Config) {

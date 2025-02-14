@@ -57,3 +57,16 @@ func Leave(s *discordgo.Session, i *discordgo.InteractionCreate, c *common.Confi
 	})
 
 }
+
+func PlayTest(s *discordgo.Session, i *discordgo.InteractionCreate, c *common.Config) {
+	// check voiceConnection
+	var voiceConnection *discordgo.VoiceConnection
+	for _, v := range c.Bot.VoiceConnections {
+		if v.GuildID == i.GuildID {
+			voiceConnection = v
+			break
+		}
+	}
+
+	voiceConnection.Speaking(true)
+}
