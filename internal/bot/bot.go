@@ -5,13 +5,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type Config struct {
-	Bot         *discordgo.Session
-	Token       string
-	AppID       string
-	StartStatus string
-}
-
 func RegisterCommand(s *discordgo.Session) {
 	BasicCommands(s)
 	YoutubePlayerCommands(s)

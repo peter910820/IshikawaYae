@@ -9,10 +9,11 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"ishikawayae/internal/bot"
+	"ishikawayae/internal/common"
 )
 
 var (
-	c bot.Config
+	c common.Config
 )
 
 func main() {
@@ -28,10 +29,11 @@ func main() {
 		logrus.Fatal(err)
 	}
 
-	c = bot.Config{
+	c = common.Config{
 		Token:       os.Getenv("TOKEN"),
 		AppID:       os.Getenv("APP_ID"),
 		StartStatus: os.Getenv("Start_Status"),
+		VcMap:       make(map[string]*discordgo.VoiceConnection),
 	}
 
 	c.Bot, err = discordgo.New("Bot " + c.Token)
@@ -63,5 +65,5 @@ func ready(s *discordgo.Session, r *discordgo.Ready) {
 }
 
 func onInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	go bot.HandleInteraction(s, i)
+	go bot.HandleInteraction(s, i, &c)
 }

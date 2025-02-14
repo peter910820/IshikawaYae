@@ -12,12 +12,16 @@ func YoutubePlayerCommands(s *discordgo.Session) {
 			Description: "join into voice channel",
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Type:        discordgo.ApplicationCommandOptionInteger,
-					Name:        "voice-cahnnle-id",
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "channel-id",
 					Description: "if the parameter is required, the bot will enter the user's current channel",
 					Required:    false,
 				},
 			},
+		},
+		{
+			Name:        "leave",
+			Description: "leave voice channel",
 		},
 	}
 	for _, cmd := range commands {
