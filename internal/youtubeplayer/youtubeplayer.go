@@ -1,6 +1,10 @@
 package youtubeplayer
 
 import (
+	"log"
+	"os/exec"
+	"time"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 
@@ -69,4 +73,39 @@ func PlayTest(s *discordgo.Session, i *discordgo.InteractionCreate, c *common.Co
 	}
 
 	voiceConnection.Speaking(true)
+
+	cmd := exec.Command("ffmpeg", "-i", "filpath", "-f", "opus", "-ar", "48000", "-ac", "2", "-b:a", "64k", "-loglevel", "debug", "-")
+	// 透過管道接收 ffmpeg 的輸出
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Fatal("無法建立管道:", err)
+	}
+	if err := cmd.Start(); err != nil {
+		log.Fatal("啟動 ffmpeg 錯誤:", err)
+	}
+
+	// 定義緩衝區
+	buf := make([]byte, 1024) // 每個 Opus 音頻框架的大小
+
+	// 發送音頻流到 Discord 語音頻道
+	for {
+		n, err := stdout.Read(buf)
+		if err != nil {
+			if err.Error() == "EOF" {
+				break
+			}
+			log.Println("讀取音頻資料時發生錯誤:", err)
+			break
+		}
+
+		// 將音頻資料寫入 OpusSend channel
+		voiceConnection.OpusSend <- buf[:n]
+
+		// 控制播放速率，這裡加入延遲，確保每次送出資料的頻率正確
+		time.Sleep(20 * time.Millisecond)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		log.Println("ffmpeg 命令錯誤:", err)
+	}
 }
